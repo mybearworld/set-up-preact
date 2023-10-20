@@ -23,7 +23,7 @@ export default{content:["index.html","src/**/*.tsx"],theme:{extend:{fontFamily:{
 "jsx":"react-jsx","jsxImportSource":"preact","skipLibCheck":true,"paths":{"react":["./node_modules/preact/compat/"],"react-dom":["./node_modules/preact/compat/"]}},"include":["node_modules/vite/client.d.ts","**/*"]}"#,
     ],
     [
-      "src/index.ts",
+      "src/index.tsx",
       r#"import { render } from "preact";import "./style.css";
 export function App(){return <>Hello, world!</>}
 
