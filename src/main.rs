@@ -12,6 +12,8 @@ where
 }
 
 fn main() {
+  println!("Modifying files...");
+
   let inter = include_bytes!("../fonts/Inter.var.woff2");
   fs::create_dir("src/assets/fonts").unwrap_or_else(|err| {
     error("create src/assets/fonts", err);
