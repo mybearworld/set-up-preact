@@ -1,4 +1,5 @@
 use std::fs;
+use std::process::Command;
 mod files;
 
 fn main() {
@@ -12,5 +13,37 @@ fn main() {
   for [path, contents] in files::files() {
     fs::write(path, contents)
       .unwrap_or_else(|err| eprintln!("Note: Failed to write {path}: {err}"));
+  }
+
+  if let Ok(pnpm) = which::which("pnpm") {
+    println!("Installing dependencies...");
+
+    if let Err(err) = Command::new(&pnpm).arg("install").output() {
+      eprintln!("Note: Failed to install Preact's dependencies: {err}");
+    }
+
+    if let Err(err) = Command::new(&pnpm)
+      .arg("install")
+      .arg("tailwindcss")
+      .arg("postcss")
+      .arg("autoprefixer")
+      .arg("prettier")
+      .output()
+    {
+      eprintln!("Note: Failed to the project's dependencies: {err}");
+    }
+
+    println!("Formatting...");
+    if let Err(err) = Command::new(&pnpm)
+      .arg("exec")
+      .arg("prettier")
+      .arg("-w")
+      .arg("**/*.*")
+      .output()
+    {
+      eprintln!("Note: Failed to format: {err}")
+    }
+  } else {
+    eprintln!("Note: Couldn't find PNPM.");
   }
 }
