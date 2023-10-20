@@ -46,4 +46,6 @@ fn main() {
   } else {
     eprintln!("Note: Couldn't find PNPM.");
   }
+
+  println!("Done! You can begin coding now :)")
 }
