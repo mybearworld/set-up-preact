@@ -1,30 +1,45 @@
+use std::fmt::Display;
 use std::fs;
 use std::process::Command;
 mod files;
 
+fn error<T, U>(action: T, err: U)
+where
+  T: Display,
+  U: Display,
+{
+  eprintln!("Error: Failed to {action}: {err}");
+}
+
 fn main() {
   let inter = include_bytes!("../fonts/Inter.var.woff2");
-  fs::create_dir("src/assets/fonts")
-    .unwrap_or_else(|err| eprintln!("Note: Failed to create src/assets/fonts: {err}"));
+  fs::create_dir("src/assets/fonts").unwrap_or_else(|err| {
+    error("create src/assets/fonts", err);
+  });
   fs::write("src/assets/fonts/Inter.var.woff2", inter).unwrap_or_else(|err| {
-    eprintln!("Note: Failed to create src/assets/fonts/Inter.var.woff2: {err}")
+    error("create src/assets/fonts/Inter.var.woff2", err);
   });
 
   for [path, contents] in files::files() {
-    fs::write(path, contents)
-      .unwrap_or_else(|err| eprintln!("Note: Failed to write {path}: {err}"));
+    fs::write(path, contents).unwrap_or_else(|err| {
+      error(format!("write {path}"), err);
+    });
   }
 
-  fs::remove_file("src/assets/preact.svg")
-    .unwrap_or_else(|err| eprintln!("Note: Failed to delete src/assets/preact.svg: {err}"));
-  fs::remove_dir_all("public")
-    .unwrap_or_else(|err| eprintln!("Note: Failed to delete public: {err}"));
+  fs::remove_file("src/assets/preact.svg").unwrap_or_else(|err| {
+    error("delete src/assets/preact.svg", err);
+  });
+  fs::remove_dir_all("public").unwrap_or_else(|err| {
+    error("delete public", err);
+  });
 
-  if let Ok(pnpm) = which::which("pnpm") {
+  let pnpm = which::which("pnpm");
+
+  if let Ok(pnpm) = pnpm {
     println!("Installing dependencies...");
 
     if let Err(err) = Command::new(&pnpm).arg("install").output() {
-      eprintln!("Note: Failed to install Preact's dependencies: {err}");
+      error("install Preact's dependencies", err);
     }
 
     if let Err(err) = Command::new(&pnpm)
@@ -35,7 +50,7 @@ fn main() {
       .arg("prettier")
       .output()
     {
-      eprintln!("Note: Failed to the project's dependencies: {err}");
+      error("install the project's dependencies", err);
     }
 
     println!("Formatting...");
@@ -46,10 +61,10 @@ fn main() {
       .arg("**/*.*")
       .output()
     {
-      eprintln!("Note: Failed to format: {err}")
+      error("format", err);
     }
-  } else {
-    eprintln!("Note: Couldn't find PNPM.");
+  } else if let Err(err) = pnpm {
+    error("find PNPM", err);
   }
 
   println!("Done! You can begin coding now :)")
