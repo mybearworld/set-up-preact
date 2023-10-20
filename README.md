@@ -9,3 +9,13 @@ set-up-preact is a simple command line tool for setting up a Preact project crea
   - [TailwindCSS](https://tailwindcss.com)
   - [Inter](https://rsms.me/inter)
   - [Prettier](https://prettier.io)
+
+## Usage
+
+Install it with cargo:
+
+```sh
+cargo install --git https://github.com/mybearworld/set-up-preact.git
+```
+
+Annoyingly, crates.io requires an email adress to publish to...
