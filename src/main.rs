@@ -15,6 +15,11 @@ fn main() {
       .unwrap_or_else(|err| eprintln!("Note: Failed to write {path}: {err}"));
   }
 
+  fs::remove_file("src/assets/preact.svg")
+    .unwrap_or_else(|err| eprintln!("Note: Failed to delete src/assets/preact.svg: {err}"));
+  fs::remove_dir_all("public")
+    .unwrap_or_else(|err| eprintln!("Note: Failed to delete public: {err}"));
+
   if let Ok(pnpm) = which::which("pnpm") {
     println!("Installing dependencies...");
 
