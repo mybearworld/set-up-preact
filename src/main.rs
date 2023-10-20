@@ -50,6 +50,7 @@ fn main() {
       .arg("postcss")
       .arg("autoprefixer")
       .arg("prettier")
+      .arg("prettier-plugin-tailwindcss")
       .output()
     {
       error("install the project's dependencies", err);
