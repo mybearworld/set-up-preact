@@ -2,7 +2,8 @@ pub fn files() -> [[&'static str; 2]; 8] {
   [
     [
       ".prettierrc",
-      r#"{"plugins":["prettier-plugin-tailwindcss"]}"#,
+      r#"{
+"plugins":["prettier-plugin-tailwindcss"]}"#,
     ],
     [
       "index.html",
@@ -10,13 +11,16 @@ pub fn files() -> [[&'static str; 2]; 8] {
     ],
     [
       "postcss.config.js",
-      r#"export default{plugins:{tailwindcss:{},autoprefixer:{}}}"#,
+      r#"export default{
+plugins:{
+tailwindcss:{},autoprefixer:{}}}"#,
     ],
     [
       "tailwind.config.ts",
       r#"import type { Config } from "tailwindcss";import defaultTheme from "tailwindcss/defaultTheme"
 
-export default{content:["index.html","src/**/*.tsx"],theme:{extend:{fontFamily:{sans:["Inter",...defaultTheme.fontFamily.sans]}}},plugins:[]}satisfies Config"#,
+export default{content:["index.html","src/**/*.tsx"],theme:{extend:{fontFamily:{
+sans:["Inter",...defaultTheme.fontFamily.sans]}}},plugins:[]}satisfies Config"#,
     ],
     [
       "tsconfig.json",
@@ -28,6 +32,7 @@ export default{content:["index.html","src/**/*.tsx"],theme:{extend:{fontFamily:{
     [
       "src/index.tsx",
       r#"import { render } from "preact";import "./style.css";
+
 export function App(){return <>Hello, world!</>}
 
 render(<App />, document.getElementById("app")!)"#,
